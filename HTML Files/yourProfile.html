@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <!-- script type="application/javascript" src="frontEnd.js"></script -->
+        <script type="application/javascript" src="profileInformation.js"></script>
         <title>Your Profile</title>
     </head>
 
@@ -12,45 +12,49 @@
         <h5>Dietary Restrictions</h5>
 
         <form>
-            <input type="checkbox" id="diet1" name="diet" value="Gluten Free">
-            <label for="Gluten Free">Gluten Free</label>
-            <input type="checkbox" id="diet2" name="diet" value="Vegetarian">
-            <label for="Vegetarian">Vegetarian</label>
-            <input type="checkbox" id="diet3" name="diet" value="Vegan">
-            <label for="Vegan">Vegan</label>
-            <input type="checkbox" id="diet4" name="diet" value="Pescetarian">
-            <label for="Pescetarian">Pescetarian</label>
-            <input type="checkbox" id="diet5" name="diet" value="Paleo">
-            <label for="Paleo">Paleo</label>
+            <input type="checkbox" id="diet1" name="Gluten Free">
+            <label for="diet1">Gluten Free</label>
+            <input type="checkbox" id="diet2" name="Vegetarian">
+            <label for="diet2">Vegetarian</label>
+            <input type="checkbox" id="diet3" name="Vegan">
+            <label for="diet3">Vegan</label>
+            <input type="checkbox" id="diet4" name="Pescetarian">
+            <label for="diet4">Pescetarian</label>
+            <input type="checkbox" id="diet5" name="Paleo">
+            <label for="diet5">Paleo</label> <br>
+
+            <button onclick="dietaryRestrictions()">Save Restrictions</button>
         </form>
 
         <h5>Intolerances</h5>
 
         <form>
             <input type="checkbox" id="intolerance1" name="intolerance" value="Dairy">
-            <label for="Dairy">Dairy</label>
+            <label for="intolerance1">Dairy</label>
             <input type="checkbox" id="intolerance2" name="intolerance" value="Egg">
-            <label for="Egg">Egg</label>
+            <label for="intolerance2">Egg</label>
             <input type="checkbox" id="intolerance3" name="intolerance" value="Gluten">
-            <label for="Gluten">Gluten</label>
+            <label for="intolerance3">Gluten</label>
             <input type="checkbox" id="intolerance4" name="intolerance" value="Grain">
-            <label for="Grain">Grain</label>
+            <label for="intolerance4">Grain</label>
             <input type="checkbox" id="intolerance5" name="intolerance" value="Peanut">
-            <label for="Peanut">Peanut</label>
+            <label for="intolerance5">Peanut</label>
             <input type="checkbox" id="intolerance6" name="intolerance" value="Seafood">
-            <label for="Seafood">Seafood</label>
+            <label for="intolerance6">Seafood</label>
             <input type="checkbox" id="intolerance7" name="intolerance" value="Sesame">
-            <label for="Sesame">Sesame</label>
+            <label for="intolerance7">Sesame</label>
             <input type="checkbox" id="intolerance8" name="intolerance" value="Shellfish">
-            <label for="Shellfish">Shellfish</label>
+            <label for="intolerance8">Shellfish</label>
             <input type="checkbox" id="intolerance9" name="intolerance" value="Soy">
-            <label for="Soy">Soy</label>
+            <label for="intolerance9">Soy</label>
             <input type="checkbox" id="intolerance10" name="intolerance" value="Sulfite">
-            <label for="Sulfite">Sulfite</label>
+            <label for="intolerance10">Sulfite</label>
             <input type="checkbox" id="intolerance11" name="intolerance" value="Tree Nut">
-            <label for="Tree Nut">Tree Nut</label>
+            <label for="intolerance11">Tree Nut</label>
             <input type="checkbox" id="intolerance12" name="intolerance" value="Wheat">
-            <label for="Wheat">Wheat</label>
+            <label for="intolerance12">Wheat</label> <br>
+
+            <button onclick="intolerances()">Save Restrictions</button>
         </form>
 
         <h5>Address</h5>
