@@ -1,5 +1,11 @@
 /*jslint esnext:true*/
 
+/* Functions to save Profile Information */
+
+let d;
+let i;
+let a;
+
 function dietaryRestrictions() {
     let result = "";
     let search = "";
@@ -9,7 +15,8 @@ function dietaryRestrictions() {
         if (checkbox.checked)
             result += checkbox.name + " ";
     }
-    console.log(result);
+    d = result;
+    console.log(d);
 }
 
 function intolerances() {
@@ -21,5 +28,11 @@ function intolerances() {
         if (checkbox.checked)
             result += checkbox.name + " ";
     }
-    console.log(result);
+    i = result;
+    console.log(i);
+}
+
+function saveAddress() {
+    a = document.getElementById('address').value;
+    console.log(a);
 }
