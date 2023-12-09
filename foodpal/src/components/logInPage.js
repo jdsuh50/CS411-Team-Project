@@ -1,5 +1,4 @@
 
-
 const LogInButton = () => {
     const handleClick = () => {
       // Add your login logic here
