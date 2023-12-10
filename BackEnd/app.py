@@ -51,6 +51,18 @@ def display_users():
 
     return output  # Return the processed data
 
+@app.route('/store_user', methods=['POST'])
+def store_user():
+    user_data = request.json
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO users (username, email, ...) VALUES (%s, %s, ...)", 
+                   (user_data['username'], user_data['email'], ...))
+    conn.commit()
+    return 'User data stored in database'
+
+# Note: Replace ... with the appropriate fields and user_data keys.
+
 
 if __name__ == '__main__':
     app.run(debug=True)
