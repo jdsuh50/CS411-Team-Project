@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function DietCheckboxList() {
   // State to manage diet checkbox values
@@ -11,6 +11,9 @@ function DietCheckboxList() {
     { name: 'paleo', label: 'Paleo', checked: false },
   ]);
 
+  // State to manage selected diets as a string
+  const [selectedDietsString, setSelectedDietsString] = useState('');
+
   // Event handler for diet checkbox changes
   const handleDietCheckboxChange = (index) => {
     setDiets((prevDiets) => {
@@ -19,6 +22,21 @@ function DietCheckboxList() {
       return newDiets;
     });
   };
+
+  // Update selectedDietsString based on the selected diets
+  useEffect(() => {
+    const selectedDiets = diets
+      .filter((diet) => diet.checked)
+      .map((diet) => diet.label)
+      .join(', ');
+
+    setSelectedDietsString(selectedDiets);
+  }, [diets]);
+
+  // Log selected diets to the console
+  useEffect(() => {
+    console.log('Selected Diets:', selectedDietsString);
+  }, [selectedDietsString]);
 
   return (
     <div>

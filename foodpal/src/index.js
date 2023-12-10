@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import LogInPage from './components/LogInPage';
+import LogInPage from './components/LogInPage2';
 import YourProfilePage from './components/YourProfilePage';
 import {
   createBrowserRouter,
