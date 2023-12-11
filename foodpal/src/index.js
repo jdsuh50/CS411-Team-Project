@@ -22,7 +22,11 @@ const router = createBrowserRouter([
   {
     path: "yourProfile",
     element: <YourProfilePage />
-  }
+  },
+  {
+    path: "search",
+    element: <recipeSearchPage />
+  }, 
 ]);
 
 

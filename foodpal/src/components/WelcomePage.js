@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 function WelcomePage() {
     return (
-        <div>
-            <h1> Welcome to FoodPal </h1> <br />
-            <h2> Please Log In/Sign Up to Continue </h2> <br />
-            <Link to="/logIn">Log In/Sign Up</Link>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
+            <h1> welcome to foodpal. </h1> <br />
+            <h2> please log in/sign up to continue </h2> <br />
+            <Link to="/logIn">log in/sign up</Link>
         </div>
     );
 }
