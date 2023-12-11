@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LogInPage from './components/LogInPage2';
 import YourProfilePage from './components/YourProfilePage';
+import SearchRecipes from './components/recipeSearchPage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "search",
-    element: <recipeSearchPage />
+    element: <SearchRecipes />
   }, 
 ]);
 
