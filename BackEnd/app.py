@@ -100,6 +100,32 @@ def store_user():
 
 # Note: Replace ... with the appropriate fields and user_data keys.
 
+# For user preferences: 
+@app.route('/store_preferences', methods=['POST'])
+def store_preferences():
+    user_data = request.json
+    user_id = user_data['userId']
+    email = user_data['email']
+    diets = user_data['diets']
+    intolerances = user_data['intolerances']
+    address = user_data['address']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    
+    # Insert diets into Preferences table
+    for diet in diets:
+        cursor.execute("INSERT INTO Preferences (user_id, diet) VALUES (%s, %s)", 
+                       (user_id, diet))
+    
+    # Insert intolerances into Intolerances table
+    for intolerance in intolerances:
+        cursor.execute("INSERT INTO Intolerances (user_id, intolerance) VALUES (%s, %s)", 
+                       (user_id, intolerance))
+    
+    conn.commit()
+    
+    return 'User preferences and intolerances stored in database'
+
 # Clear Data: 
 @app.route('/clear_data', methods=['POST'])
 def clear_data():

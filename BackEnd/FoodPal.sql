@@ -13,11 +13,27 @@ CREATE TABLE Users(
  PRIMARY KEY (user_id)
  );
 
-CREATE TABLE recipes(
- recipes_id INTEGER AUTO_INCREMENT,
- data LONGBLOB,
- rname VARCHAR(100),
- user_id INTEGER NOT NULL,
- PRIMARY KEY (recipes_id),
- FOREIGN KEY (user_id) REFERENCES Users (user_id)
+-- CREATE TABLE recipes(
+--  recipes_id INTEGER AUTO_INCREMENT,
+--  data LONGBLOB,
+--  rname VARCHAR(100),
+--  user_id INTEGER NOT NULL,
+--  PRIMARY KEY (recipes_id),
+--  FOREIGN KEY (user_id) REFERENCES Users (user_id)
+-- );
+
+CREATE TABLE Preferences(
+    preference_id INTEGER AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    diet VARCHAR(100),
+    PRIMARY KEY (preference_id),
+    FOREIGN KEY (user_id) REFERENCES Users (user_id)
+);
+
+CREATE TABLE Intolerances(
+    intolerance_id INTEGER AUTO_INCREMENT,
+    user_id INTEGER NOT NULL,
+    intolerance VARCHAR(100),
+    PRIMARY KEY (intolerance_id),
+    FOREIGN KEY (user_id) REFERENCES Users (user_id)
 );
