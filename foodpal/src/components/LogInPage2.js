@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 };*/
 
 function LogInPage() {
+  var loggedIn = false;
 
   // function handleCallbackResponse(response) {
   //   console.log("Encoded JWT ID Token: " + response.credential);
@@ -52,7 +53,8 @@ function LogInPage() {
     /* global google */
     google.accounts.id.initialize({
       client_id: "692290108953-17o24fd8u4lnc7m2dtr8aafv3egjd953.apps.googleusercontent.com",
-      callback: handleCallbackResponse
+      callback: handleCallbackResponse.
+      loggedIn = true
     });
 
     google.accounts.id.renderButton(
@@ -60,6 +62,14 @@ function LogInPage() {
       { theme: "outline", size: "large" }
     )
   }, []);
+
+  useEffect(() => {
+    // Redirect to a new page after successful login
+    if (loggedIn) {
+      history.push('/yourProfile'); // move to profile page
+    }
+  }, [loggedIn]);
+
 
   return (
     <div className="LogInPage">
