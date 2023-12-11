@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 function DietCheckboxList() {
   // State to manage diet checkbox values
   const [diets, setDiets] = useState([
-    { name: 'glutenFree', label: 'Gluten Free', checked: false },
-    { name: 'vegetarian', label: 'Vegetarian', checked: false },
-    { name: 'vegan', label: 'Vegan', checked: false },
-    { name: 'pescetarian', label: 'Pescetarian', checked: false },
-    { name: 'paleo', label: 'Paleo', checked: false },
+    { name: 'gluten free', label: 'gluten free', checked: false },
+    { name: 'vegetarian', label: 'vegetarian', checked: false },
+    { name: 'vegan', label: 'vegan', checked: false },
+    { name: 'pescetarian', label: 'pescetarian', checked: false },
+    { name: 'paleo', label: 'paleo', checked: false },
   ]);
 
   // State to manage selected diets as a string
@@ -35,12 +36,14 @@ function DietCheckboxList() {
 
   // Log selected diets to the console
   useEffect(() => {
-    console.log('Selected Diets:', selectedDietsString);
+    console.log('selected diets:', selectedDietsString);
   }, [selectedDietsString]);
 
   return (
-    <div>
-      <h2>Select your Diet(s)</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
+      <h1>visit the <Link to="/search">search</Link> page...</h1> 
+        
+      <h2>select your preferences.</h2>
       <form>
         {diets.map((diet, index) => (
           <div key={index}>
@@ -58,11 +61,11 @@ function DietCheckboxList() {
       </form>
 
       <div>
-        <h3>Selected Diets:</h3>
+        <h3>preferences.</h3>
         <ul>
           {diets.map((diet) => (
             <li key={diet.name}>
-              {diet.name}: {diet.checked ? 'Selected' : 'Not Selected'}
+              {diet.name}: {diet.checked ? 'yep' : 'nope'}
             </li>
           ))}
         </ul>
