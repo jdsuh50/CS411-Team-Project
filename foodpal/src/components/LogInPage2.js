@@ -1,23 +1,11 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router-dom";
-
-/*const LogInButton = () => {
-    const handleClick = () => {
-      // Add your login logic here
-      console.log('Login button clicked!');
-    };
-  
-    return (
-      <button onClick={handleClick}>
-        Log In
-      </button>
-    );
-};*/
+import { Link, useNavigate } from "react-router-dom";
 
 function LogInPage() {
-  var loggedIn = false;
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   function handleCallbackResponse(response) {
     console.log("Encoded JWT ID Token: " + response.credential);
@@ -25,14 +13,17 @@ function LogInPage() {
     console.log(userObject);
     let email = userObject.email;
     console.log(email);
+
+    // Set loggedIn to true after successful login
+    setLoggedIn(true);
   }
 
   useEffect(() => {
     /* global google */
     google.accounts.id.initialize({
       client_id: "692290108953-17o24fd8u4lnc7m2dtr8aafv3egjd953.apps.googleusercontent.com",
-      callback: handleCallbackResponse.
-      loggedIn = true
+      callback: handleCallbackResponse,
+      loggedIn: true
     });
 
     google.accounts.id.renderButton(
@@ -44,10 +35,9 @@ function LogInPage() {
   useEffect(() => {
     // Redirect to a new page after successful login
     if (loggedIn) {
-      history.push('/yourProfile'); // move to profile page
+      navigate('/yourProfile'); // Use navigate instead of useNavigate
     }
-  }, [loggedIn]);
-
+  }, [loggedIn, navigate]);
 
   return (
     <div className="LogInPage">

@@ -14,6 +14,7 @@ function SearchRecipes() {
       </head>
 
       <body>
+        <LogOutButton />
         <h1>Search For Recipes</h1>
 
         <form>
