@@ -14,10 +14,10 @@ CREATE TABLE Users(
  );
 
 CREATE TABLE recipes(
- recipes_id INTEGER,
+ recipes_id INTEGER AUTO_INCREMENT,
  data LONGBLOB,
  rname VARCHAR(100),
-user_id INTEGER NOT NULL,
- PRIMARY KEY (recipes),
-FOREIGN KEY (user_id) REFERENCES Users (user_id)
+ user_id INTEGER NOT NULL,
+ PRIMARY KEY (recipes_id),
+ FOREIGN KEY (user_id) REFERENCES Users (user_id)
 );
