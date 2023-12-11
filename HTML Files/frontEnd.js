@@ -19,7 +19,7 @@ function callAPI() {
     str = searchFor.value;
 
     /* PUT YOUR OWN API KEY HERE */
-    let apiKey = "e3771605fd6448899fac4502d77a2d4c";
+    let apiKey = ;
     callStr = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=' + apiKey;
     callStr += '&query=' + str;
     callStr += '&number=2';
