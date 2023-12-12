@@ -62,20 +62,6 @@ def display_users():
 #     return 'User data stored in database'
 
 # Testing: 
-# @app.route('/store_user', methods=['POST'])
-# def store_user():
-#     user_data = request.json
-#     first_name = user_data['first_name']
-#     last_name = user_data['last_name']
-#     email = user_data['email']
-#     conn = mysql.connect()
-#     cursor = conn.cursor()
-#     cursor.execute("INSERT INTO Users (first_name, last_name, email, dateOfBirth, hometown, gender, password) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-#                    (first_name, last_name, email, None, '', '', 'default_password'))
-#     conn.commit()
-#     return 'User email stored in database'
-
-# Testing again: 
 @app.route('/store_user', methods=['POST'])
 def store_user():
     user_data = request.json
@@ -84,18 +70,32 @@ def store_user():
     email = user_data['email']
     conn = mysql.connect()
     cursor = conn.cursor()
+    cursor.execute("INSERT INTO Users (first_name, last_name, email, dateOfBirth, hometown, gender, password) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                   (first_name, last_name, email, None, '', '', 'default_password'))
+    conn.commit()
+    return 'User email stored in database'
+
+# Testing again: 
+# @app.route('/store_user', methods=['POST'])
+# def store_user():
+#     user_data = request.json
+#     first_name = user_data['first_name']
+#     last_name = user_data['last_name']
+#     email = user_data['email']
+#     conn = mysql.connect()
+#     cursor = conn.cursor()
     
-    # Check if email already exists
-    cursor.execute("SELECT * FROM Users WHERE email = %s", (email,))
-    existing_user = cursor.fetchone()
+#     # Check if email already exists
+#     cursor.execute("SELECT * FROM Users WHERE email = %s", (email,))
+#     existing_user = cursor.fetchone()
     
-    if existing_user:
-        return 'Email already in use'
-    else:
-        cursor.execute("INSERT INTO Users (first_name, last_name, email, dateOfBirth, hometown, gender, password) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-                       (first_name, last_name, email, None, '', '', 'default_password'))
-        conn.commit()
-        return 'User email stored in database'
+#     if existing_user:
+#         return 'Email already in use'
+#     else:
+#         cursor.execute("INSERT INTO Users (first_name, last_name, email, dateOfBirth, hometown, gender, password) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+#                        (first_name, last_name, email, None, '', '', 'default_password'))
+#         conn.commit()
+#         return 'User email stored in database'
 
 
 # Note: Replace ... with the appropriate fields and user_data keys.

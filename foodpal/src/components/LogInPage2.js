@@ -20,7 +20,6 @@ function LogInPage() {
     console.log("Encoded JWT ID Token: " + response.credential);
     let userObject = jwtDecode(response.credential);
     console.log(userObject);
-
     let email = userObject.email;
     console.log(email);
 
