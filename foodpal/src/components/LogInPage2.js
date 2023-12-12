@@ -26,7 +26,6 @@ function LogInPage() {
 
     // Set loggedIn to true after successful login
     setLoggedIn(true);
-  }
 
     // Send only the email to your Flask server
     fetch('http://127.0.0.1:5000/store_user', {
@@ -42,7 +41,7 @@ function LogInPage() {
     })
     .then(response => response.text())
     .then(data => console.log(data));
-}
+  }
 
   useEffect(() => {
     /* global google */
