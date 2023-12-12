@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import LogOutButton from './LogOutButton';
+import axios from 'axios';
 
 function DietCheckboxList() {
   // State to manage diet checkbox values
@@ -206,6 +207,26 @@ function YourProfilePage() {
       <AddressForm />
     </div>
   )
+}
+
+// Added by Albert
+// function to send user preferences to SQL database
+function sendUserPreferences(userId, email, diets, intolerances, address) {
+  console.log('Sending user preferences:', { userId, email, diets, intolerances, address });
+  
+  axios.post('http://127.0.0.1:5000/store_preferences', {
+    userId,
+    email,
+    diets,
+    intolerances,
+    address,
+  })
+  .then(response => {
+    console.log('Response from server:', response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
 
 export default YourProfilePage;
