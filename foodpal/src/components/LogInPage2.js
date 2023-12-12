@@ -7,14 +7,6 @@ function LogInPage() {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // function handleCallbackResponse(response) {
-  //   console.log("Encoded JWT ID Token: " + response.credential);
-  //   let userObject = jwtDecode(response.credential);
-  //   console.log(userObject);
-  //   let email = userObject.email;
-  //   console.log(email);
-  // }
-
   // function to send data to SQL database
   function handleCallbackResponse(response) {
     console.log("Encoded JWT ID Token: " + response.credential);

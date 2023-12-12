@@ -8,7 +8,9 @@ from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
-CORS(app, resources={r"/store_user": {"origins": "http://localhost:3000"}})
+CORS(app, resources={
+    r"/store_user": {"origins": "http://localhost:3000"},
+    r"/store_preferences": {"origins": "http://localhost:3000"},})
 app.config["MYSQL_DATABASE_USER"] = 'root'
 app.config["MYSQL_DATABASE_PASSWORD"] = 'Zcl957324'
 app.config["MYSQL_DATABASE_DB"] = 'FoodPal'
@@ -52,6 +54,27 @@ def display_users():
         output += f'User ID: {user_id}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Date of Birth: {dateOfBirth}, Hometown: {hometown}, Gender: {gender}, Password: {password}<br>'
 
     return output  # Return the processed data
+
+@app.route('/displaypi')
+def displaypi():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    # Fetch and display data from the Preferences table
+    cursor.execute("SELECT * FROM Preferences")
+    preferences_data = cursor.fetchall()
+    preferences_output = 'Preferences:<br>'
+    for row in preferences_data:
+        preferences_output += str(row) + '<br>'
+
+    # Fetch and display data from the Intolerances table
+    cursor.execute("SELECT * FROM Intolerances")
+    intolerances_data = cursor.fetchall()
+    intolerances_output = 'Intolerances:<br>'
+    for row in intolerances_data:
+        intolerances_output += str(row) + '<br>'
+
+    return preferences_output + '<br>' + intolerances_output
 
 # @app.route('/store_user', methods=['POST'])
 # def store_user():
@@ -115,12 +138,14 @@ def store_preferences():
     cursor = conn.cursor()
     
     # Insert diets into Preferences table
-    for diet in diets:
+    diet_list = diets.split(',')
+    for diet in diet_list:
         cursor.execute("INSERT INTO Preferences (user_id, diet) VALUES (%s, %s)", 
                        (user_id, diet))
     
     # Insert intolerances into Intolerances table
-    for intolerance in intolerances:
+    intolerance_list = intolerances.split(',')
+    for intolerance in intolerance_list:
         cursor.execute("INSERT INTO Intolerances (user_id, intolerance) VALUES (%s, %s)", 
                        (user_id, intolerance))
     
@@ -181,6 +206,7 @@ def get_spoonacular_recipes():
     except Exception as e:
         print('Error:', str(e))
         return jsonify({'error': 'Failed to fetch recipes'}), 500
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

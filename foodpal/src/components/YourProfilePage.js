@@ -159,6 +159,7 @@ function YourProfilePage() {
   const handleSaveChanges = () => {
     const logMessage = `Diets: ${selectedDiets || 'None'}, Intolerances: ${selectedIntolerances || 'None'}, Address: ${selectedAddress || 'None'}`;
     console.log(logMessage);
+    sendUserPreferences("5","b",selectedDiets,selectedIntolerances,selectedAddress);
   };
 
   return (
