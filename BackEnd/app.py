@@ -36,10 +36,10 @@ def home():
 def insert_user():
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (user_id, password) VALUES (123, 'test_password')")
+    cursor.execute("INSERT INTO Users (user_id, password) VALUES (123, 'test_password')")
     conn.commit()
     return 'User inserted'
-@app.route('/display')
+
 
 @app.route('/display')
 def display_users():
@@ -55,6 +55,7 @@ def display_users():
 
     return output  # Return the processed data
 
+  
 @app.route('/displaypi')
 def displaypi():
     conn = mysql.connect()
@@ -86,6 +87,16 @@ def displaypi():
 #     conn.commit()
 #     return 'User data stored in database'
 
+@app.route('/store_user', methods=['POST'])
+def store_user():
+    user_data = request.json
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO users (username, email, ...) VALUES (%s, %s, ...)", 
+                   (user_data['username'], user_data['email'], ...))
+    conn.commit()
+    return 'User data stored in database'
+
 # Testing: 
 @app.route('/store_user', methods=['POST'])
 def store_user():
@@ -99,6 +110,7 @@ def store_user():
                    (first_name, last_name, email, None, '', '', 'default_password'))
     conn.commit()
     return 'User email stored in database'
+
 
 # Testing again: 
 # @app.route('/store_user', methods=['POST'])
@@ -132,7 +144,7 @@ def store_preferences():
     user_id = user_data['userId']
     email = user_data['email']
     diets = user_data['diets']
-    intolerances = user_data['intolerances']
+    # intolerances = user_data['intolerances']
     address = user_data['address']
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -150,7 +162,6 @@ def store_preferences():
                        (user_id, intolerance))
     
     conn.commit()
-    
     return 'User preferences and intolerances stored in database'
 
 # Clear Data: 
