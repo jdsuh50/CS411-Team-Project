@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import LogOutButton from './LogOutButton';
 import axios from 'axios';
 
 function DietCheckboxList() {
@@ -120,7 +121,7 @@ function IntoleranceCheckboxList() {
   }, [selectedIntolerancesString]);
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
       <h2>Select Your Intolerance(s)</h2>
       <form>
         {intolerances.map((intolerance, index) => (
@@ -174,7 +175,7 @@ function AddressForm() {
   };
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
       <h2>Enter your Address:</h2>
       <form>
         <label>
@@ -200,6 +201,7 @@ function AddressForm() {
 function YourProfilePage() {
   return (
     <div className="YourProfilePage">
+      <LogOutButton />
       <DietCheckboxList />
       <IntoleranceCheckboxList />
       <AddressForm />
