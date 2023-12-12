@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import LogOutButton from './LogOutButton';
 import axios from 'axios';
 
-function DietCheckboxList() {
-  // State to manage diet checkbox values
+
+function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
   const [diets, setDiets] = useState([
     { name: 'gluten free', label: 'gluten free', checked: false },
     { name: 'vegetarian', label: 'vegetarian', checked: false },
@@ -14,10 +14,6 @@ function DietCheckboxList() {
     { name: 'paleo', label: 'paleo', checked: false },
   ]);
 
-  // State to manage selected diets as a string
-  const [selectedDietsString, setSelectedDietsString] = useState('');
-
-  // Event handler for diet checkbox changes
   const handleDietCheckboxChange = (index) => {
     setDiets((prevDiets) => {
       const newDiets = [...prevDiets];
@@ -26,26 +22,18 @@ function DietCheckboxList() {
     });
   };
 
-  // Update selectedDietsString based on the selected diets
   useEffect(() => {
-    const selectedDiets = diets
+    const selectedDietsString = diets
       .filter((diet) => diet.checked)
       .map((diet) => diet.label)
       .join(', ');
 
-    setSelectedDietsString(selectedDiets);
-  }, [diets]);
-
-  // Log selected diets to the console
-  useEffect(() => {
-    console.log('selected diets:', selectedDietsString);
-  }, [selectedDietsString]);
+    setSelectedDiets(selectedDietsString);
+  }, [diets, setSelectedDiets]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
-      <h1>visit the <Link to="/search">search</Link> page...</h1> 
-        
-      <h2>select your preferences.</h2>
+    <div>
+      <h2>Select Your Diets</h2>
       <form>
         {diets.map((diet, index) => (
           <div key={index}>
@@ -61,23 +49,11 @@ function DietCheckboxList() {
           </div>
         ))}
       </form>
-
-      <div>
-        <h3>preferences.</h3>
-        <ul>
-          {diets.map((diet) => (
-            <li key={diet.name}>
-              {diet.name}: {diet.checked ? 'yep' : 'nope'}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
 
-function IntoleranceCheckboxList() {
-  // State to manage intolerance checkbox values
+function IntoleranceCheckboxList({ selectedIntolerances, setSelectedIntolerances }) {
   const [intolerances, setIntolerances] = useState([
     { name: 'dairy', label: 'Dairy', checked: false },
     { name: 'egg', label: 'Egg', checked: false },
@@ -93,10 +69,6 @@ function IntoleranceCheckboxList() {
     { name: 'wheat', label: 'Wheat', checked: false },
   ]);
 
-  // State to manage selected diets as a string
-  const [selectedIntolerancesString, setSelectedIntolerancesString] = useState('');
-
-  // Event handler for diet checkbox changes
   const handleIntoleranceCheckboxChange = (index) => {
     setIntolerances((prevIntolerances) => {
       const newIntolerances = [...prevIntolerances];
@@ -105,23 +77,17 @@ function IntoleranceCheckboxList() {
     });
   };
 
-  // Update selectedDietsString based on the selected diets
   useEffect(() => {
-    const selectedIntolerances = intolerances
+    const selectedIntolerancesString = intolerances
       .filter((intolerance) => intolerance.checked)
       .map((intolerance) => intolerance.label)
       .join(', ');
 
-    setSelectedIntolerancesString(selectedIntolerances);
-  }, [intolerances]);
-
-  // Log selected diets to the console
-  useEffect(() => {
-    console.log('Selected Intolerances:', selectedIntolerancesString);
-  }, [selectedIntolerancesString]);
+    setSelectedIntolerances(selectedIntolerancesString);
+  }, [intolerances, setSelectedIntolerances]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
+    <div>
       <h2>Select Your Intolerance(s)</h2>
       <form>
         {intolerances.map((intolerance, index) => (
@@ -138,28 +104,15 @@ function IntoleranceCheckboxList() {
           </div>
         ))}
       </form>
-
-      <div>
-        <h3>Selected Intolerances:</h3>
-        <ul>
-          {intolerances.map((intolerance) => (
-            <li key={intolerance.name}>
-              {intolerance.name}: {intolerance.checked ? 'Selected' : 'Not Selected'}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
 
-function AddressForm() {
-  // State to manage form data
+function AddressForm({ onSaveAddress }) {
   const [addressData, setAddressData] = useState({
     address: '',
   });
 
-  // Event handler for input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setAddressData((prevData) => ({
@@ -168,14 +121,12 @@ function AddressForm() {
     }));
   };
 
-  // Event handler for "Save Address" button click
   const handleSaveAddress = () => {
-    // Log the address to the console
-    console.log('Address:', addressData.address);
+    onSaveAddress(addressData.address);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
+    <div>
       <h2>Enter your Address:</h2>
       <form>
         <label>
@@ -187,9 +138,7 @@ function AddressForm() {
             placeholder="Enter your address"
           />
         </label>
-
         <br />
-
         <button type="button" onClick={handleSaveAddress}>
           Save Address
         </button>
@@ -199,14 +148,30 @@ function AddressForm() {
 }
 
 function YourProfilePage() {
+  const [selectedDiets, setSelectedDiets] = useState('');
+  const [selectedIntolerances, setSelectedIntolerances] = useState('');
+  const [selectedAddress, setSelectedAddress] = useState('');
+
+  const handleSaveAddress = (address) => {
+    setSelectedAddress(address);
+  };
+
+  const handleSaveChanges = () => {
+    const logMessage = `Diets: ${selectedDiets || 'None'}, Intolerances: ${selectedIntolerances || 'None'}, Address: ${selectedAddress || 'None'}`;
+    console.log(logMessage);
+  };
+
   return (
-    <div className="YourProfilePage">
+    <div className="YourProfilePage" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <LogOutButton />
-      <DietCheckboxList />
-      <IntoleranceCheckboxList />
-      <AddressForm />
+      <DietCheckboxList selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets} />
+      <IntoleranceCheckboxList selectedIntolerances={selectedIntolerances} setSelectedIntolerances={setSelectedIntolerances} />
+      <AddressForm onSaveAddress={handleSaveAddress} />
+      <button type="button" onClick={handleSaveChanges}>
+        Save Changes
+      </button>
     </div>
-  )
+  );
 }
 
 // Added by Albert
