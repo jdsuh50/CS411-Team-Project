@@ -12,16 +12,7 @@ CREATE TABLE Users(
  password VARCHAR(100) NOT NULL,
  PRIMARY KEY (user_id)
  );
-
--- CREATE TABLE recipes(
---  recipes_id INTEGER AUTO_INCREMENT,
---  data LONGBLOB,
---  rname VARCHAR(100),
---  user_id INTEGER NOT NULL,
---  PRIMARY KEY (recipes_id),
---  FOREIGN KEY (user_id) REFERENCES Users (user_id)
--- );
-
+ 
 CREATE TABLE Preferences(
     preference_id INTEGER AUTO_INCREMENT,
     user_id INTEGER NOT NULL,

@@ -8,7 +8,11 @@ from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
-CORS(app, resources={r"/store_user": {"origins": "http://localhost:3000"}})
+# CORS(app, resources={
+#     r"/store_user": {"origins": "http://localhost:3000"},
+#     r"/store_preferences": {"origins": "http://localhost:3000"}
+# })
+CORS(app)
 app.config["MYSQL_DATABASE_USER"] = 'root'
 app.config["MYSQL_DATABASE_PASSWORD"] = 'Zcl957324'
 app.config["MYSQL_DATABASE_DB"] = 'FoodPal'
@@ -34,10 +38,10 @@ def home():
 def insert_user():
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (user_id, password) VALUES (123, 'test_password')")
+    cursor.execute("INSERT INTO Users (user_id, password) VALUES (123, 'test_password')")
     conn.commit()
     return 'User inserted'
-@app.route('/display')
+
 
 @app.route('/display')
 def display_users():
@@ -53,17 +57,18 @@ def display_users():
 
     return output  # Return the processed data
 
-# @app.route('/store_user', methods=['POST'])
-# def store_user():
-#     user_data = request.json
-#     conn = mysql.connect()
-#     cursor = conn.cursor()
-#     cursor.execute("INSERT INTO users (username, email, ...) VALUES (%s, %s, ...)", 
-#                    (user_data['username'], user_data['email'], ...))
-#     conn.commit()
-#     return 'User data stored in database'
+@app.route('/store_user', methods=['POST'])
+def store_user():
+    user_data = request.json
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO users (username, email, ...) VALUES (%s, %s, ...)", 
+                   (user_data['username'], user_data['email'], ...))
+    conn.commit()
+    return 'User data stored in database'
 
 # Testing: 
+<<<<<<< Updated upstream
 @app.route('/store_user', methods=['POST'])
 def store_user():
     user_data = request.json
@@ -76,6 +81,20 @@ def store_user():
                    (first_name, last_name, email, None, '', '', 'default_password'))
     conn.commit()
     return 'User email stored in database'
+=======
+# @app.route('/store_user', methods=['POST'])
+# def store_user():
+#     user_data = request.json
+#     first_name = user_data['first_name']
+#     last_name = user_data['last_name']
+#     email = user_data['email']
+#     conn = mysql.connect()
+#     cursor = conn.cursor()
+#     cursor.execute("INSERT INTO Users (first_name, last_name, email, dateOfBirth, hometown, gender, password) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+#                    (first_name, last_name, email, None, '', '', 'default_password'))
+#     conn.commit()
+#     return 'User email stored in database'
+>>>>>>> Stashed changes
 
 # Testing again: 
 # @app.route('/store_user', methods=['POST'])
@@ -109,7 +128,7 @@ def store_preferences():
     user_id = user_data['userId']
     email = user_data['email']
     diets = user_data['diets']
-    intolerances = user_data['intolerances']
+    # intolerances = user_data['intolerances']
     address = user_data['address']
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -120,12 +139,11 @@ def store_preferences():
                        (user_id, diet))
     
     # Insert intolerances into Intolerances table
-    for intolerance in intolerances:
-        cursor.execute("INSERT INTO Intolerances (user_id, intolerance) VALUES (%s, %s)", 
-                       (user_id, intolerance))
+    # for intolerance in intolerances:
+    #     cursor.execute("INSERT INTO Intolerances (user_id, intolerance) VALUES (%s, %s)", 
+    #                    (user_id, intolerance))
     
     conn.commit()
-    
     return 'User preferences and intolerances stored in database'
 
 # Clear Data: 
