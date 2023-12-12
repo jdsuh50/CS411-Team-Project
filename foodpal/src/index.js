@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LogInPage from './components/LogInPage2';
 import YourProfilePage from './components/YourProfilePage';
+import SearchPage from './components/SearchPage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "search",
-    element: <recipeSearchPage />
+    element: <SearchPage />
   }, 
 ]);
 

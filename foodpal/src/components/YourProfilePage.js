@@ -5,6 +5,17 @@ import LogOutButton from './LogOutButton';
 import axios from 'axios';
 
 
+
+function LinktoSearch() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
+      <h2>hungry?</h2>
+      <Link to="/search">search recipes</Link>
+    </div>
+  )
+}
+
+
 function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
   const [diets, setDiets] = useState([
     { name: 'gluten free', label: 'gluten free', checked: false },
@@ -13,6 +24,7 @@ function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
     { name: 'pescetarian', label: 'pescetarian', checked: false },
     { name: 'paleo', label: 'paleo', checked: false },
   ]);
+
 
   const handleDietCheckboxChange = (index) => {
     setDiets((prevDiets) => {
@@ -32,7 +44,7 @@ function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
   }, [diets, setSelectedDiets]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <h2>Select Your Diets</h2>
       <form>
         {diets.map((diet, index) => (
@@ -164,6 +176,7 @@ function YourProfilePage() {
   return (
     <div className="YourProfilePage" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <LogOutButton />
+      <LinktoSearch/>
       <DietCheckboxList selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets} />
       <IntoleranceCheckboxList selectedIntolerances={selectedIntolerances} setSelectedIntolerances={setSelectedIntolerances} />
       <AddressForm onSaveAddress={handleSaveAddress} />
@@ -178,7 +191,7 @@ function YourProfilePage() {
 // function to send user preferences to SQL database
 function sendUserPreferences(userId, email, diets, intolerances, address) {
   console.log('Sending user preferences:', { userId, email, diets, intolerances, address });
-  
+
   axios.post('http://127.0.0.1:5000/store_preferences', {
     userId,
     email,
@@ -186,12 +199,12 @@ function sendUserPreferences(userId, email, diets, intolerances, address) {
     intolerances,
     address,
   })
-  .then(response => {
-    console.log('Response from server:', response.data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+    .then(response => {
+      console.log('Response from server:', response.data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
 export default YourProfilePage;
