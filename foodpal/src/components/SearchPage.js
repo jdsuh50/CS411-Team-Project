@@ -3,8 +3,10 @@ import axios from 'axios';
 import LogOutButton from './LogOutButton'; // Assuming you have a LogOutButton component
 
 
-function CuisineCheckboxList({ selectedcuisines, setSelectedcuisines }) {
-  const [cuisines, setcuisines] = useState([
+
+
+  function CuisineCheckboxList({ selectedcuisines, setSelectedcuisines }) {
+    const [cuisines, setcuisines] = useState([
       { name: 'african', label: 'African', checked: false },
       { name: 'asian', label: 'Asian', checked: false },
       { name: 'american', label: 'American', checked: false },
@@ -32,52 +34,66 @@ function CuisineCheckboxList({ selectedcuisines, setSelectedcuisines }) {
       { name: 'spanish', label: 'Spanish', checked: false },
       { name: 'thai', label: 'Thai', checked: false },
       { name: 'vietnamese', label: 'Vietnamese', checked: false },
-  ]);
+    ]);
 
-  const handleButtonClick = (index) => {
-    const updatedCuisines = [...cuisines];
-    updatedCuisines[index].active = !updatedCuisines[index].active;
-    setcuisines(updatedCuisines);
 
-    // Update the selectedCuisines state based on the active cuisines
-    const selected = updatedCuisines.filter((cuisine) => cuisine.active).map((cuisine) => cuisine.name);
-    setSelectedcuisines(selected);
-  };
+    const handleButtonClick = (index) => {
+      const updatedCuisines = [...cuisines];
+      updatedCuisines[index].active = !updatedCuisines[index].active;
+      setcuisines(updatedCuisines);
 
-  useEffect(() => {
-    const selectedcuisinesString = cuisines
-      .filter((cuisine) => cuisine.checked)
-      .map((cuisine) => cuisine.label)
-      .join(', ');
+      // Update the selectedCuisines state based on the active cuisines
+      const selected = updatedCuisines.filter((cuisine) => cuisine.active).map((cuisine) => cuisine.name);
+      setSelectedcuisines(selected);
+    };
 
-    setSelectedcuisines(selectedcuisinesString);
-  }, [cuisines, setSelectedcuisines]);
+    useEffect(() => {
+      const selectedcuisinesString = cuisines
+        .filter((cuisine) => cuisine.checked)
+        .map((cuisine) => cuisine.label)
+        .join(', ');
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
-      <h2>Choose Cuisines</h2>
-      <div>
-        {cuisines.map((cuisine, index) => (
-          <button
-            key={index}
-            onClick={() => handleButtonClick(index)}
-            style={{ margin: '5px', backgroundColor: cuisine.active ? 'lightblue' : 'white' }}
-          >
-            {cuisine.label}
-          </button>
-        ))}
+      setSelectedcuisines(selectedcuisinesString);
+    }, [cuisines, setSelectedcuisines]);
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
+        <h2>Choose Cuisines</h2>
+        <div>
+          {cuisines.map((cuisine, index) => (
+            <button
+              key={index}
+              onClick={() => handleButtonClick(index)}
+              style={{ margin: '5px', backgroundColor: cuisine.active ? 'lightblue' : 'white' }}
+            >
+              {cuisine.label}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-}
-
-
-function SearchPage() {
-
-  const [recipes, setRecipes] = useState([]);
-  const [selectedcuisines, setSelectedcuisines] = useState('');
-
+    );
+  }
   
+  function SearchPage() {
+
+    const [recipes, setRecipes] = useState([]);
+    const [selectedcuisines, setSelectedcuisines] = useState('');
+
+  const recipeRequest = () => {
+    const userData = {
+      cuisines: selectedcuisines.split(", "),
+    };
+    console.log(userData);
+
+    // Make HTTP POST request to Flask server
+    axios.post('http://127.0.0.1:5000/get_spoonacular_recipes', userData)
+      .then(response => {
+        console.log('Response from server:', response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
 
   useEffect(() => {
     // Make a GET request to the Flask backend
@@ -91,19 +107,20 @@ function SearchPage() {
       });
   }, []);
 
+
+
   return (
-  <div style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
-    <LogOutButton />
-    <h1>Search For Recipes</h1>
-    <CuisineCheckboxList selectedcuisines={selectedcuisines} setSelectedcuisines={setSelectedcuisines} />
-    <form>
-      <input type="text" name="searchFor" id="searchFor" />
-      {/* <input type="button" id="searchBtn" value="Search" /> */}
-    </form>
-    <div id="recipeImages"> </div>
-    {/* Call to back end to access Spoonacular API */}
-  </div>
-);
+    <div style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
+      <LogOutButton />
+      <h1>Search For Recipes</h1>
+      <CuisineCheckboxList selectedcuisines={selectedcuisines} setSelectedcuisines={setSelectedcuisines} />
+      <button type="button" onClick={recipeRequest}>
+        let's eat.
+      </button>
+      <div id="recipeImages"> </div>
+      {/* Call to back end to access Spoonacular API */}
+    </div>
+  );
 };
 
 export default SearchPage;

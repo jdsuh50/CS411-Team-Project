@@ -15,6 +15,7 @@ function LinktoSearch() {
   )
 }
 
+
 function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
   const [diets, setDiets] = useState([
     { name: 'gluten free', label: 'gluten free', checked: false },
