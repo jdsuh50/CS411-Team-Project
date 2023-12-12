@@ -7,8 +7,20 @@ function SearchRecipes() {
     // For example, frontEnd.callAPI();
   };
 
+  useEffect(() => {
+    // Make a GET request to the Flask backend
+    axios.get('http://localhost:5000/get_spoonacular_recipes')
+      .then(response => {
+        // Update the state with the fetched recipes
+        setRecipes(response.data.recipes);
+      })
+      .catch(error => {
+        console.error('Error fetching recipes:', error);
+      });
+  }, []);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <head>
         <title>search For recipes.</title>
       </head>

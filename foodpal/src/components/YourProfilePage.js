@@ -32,7 +32,7 @@ function DietCheckboxList({ selectedDiets, setSelectedDiets }) {
   }, [diets, setSelectedDiets]);
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica'}}>
       <h2>Select Your Diets</h2>
       <form>
         {diets.map((diet, index) => (
@@ -87,7 +87,7 @@ function IntoleranceCheckboxList({ selectedIntolerances, setSelectedIntolerances
   }, [intolerances, setSelectedIntolerances]);
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <h2>Select Your Intolerance(s)</h2>
       <form>
         {intolerances.map((intolerance, index) => (
@@ -126,7 +126,7 @@ function AddressForm({ onSaveAddress }) {
   };
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
       <h2>Enter your Address:</h2>
       <form>
         <label>

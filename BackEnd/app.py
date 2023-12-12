@@ -1,9 +1,11 @@
 import flask
 from flask import Flask, Response, request, render_template, redirect, url_for
+from flask.json import jsonify
 from flaskext.mysql import MySQL
 import flask_login
 from datetime import date
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app, resources={r"/store_user": {"origins": "http://localhost:3000"}})
@@ -140,4 +142,45 @@ def clear_data():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+
+
+@app.route('/get_spoonacular_recipes', methods=['GET'])
+def get_spoonacular_recipes():
+    try:
+        api_key = ''
+
+        # Specify the category from the request parameters
+        category = request.args.get('category')
+        diet = request.args.get('diet')
+        intolerances = request.args.get('intolerances')
+
+
+        # Specify the number of recipes to retrieve
+        number_of_recipes = 9
+
+        # Define the Spoonacular API endpoint
+        api_url = f'https://api.spoonacular.com/recipes/complexSearch'
+
+        # Specify parameters for the Spoonacular API request
+        params = {
+            'apiKey': api_key,
+            'cuisine': category,
+            'diet': diet,
+            'intolerances': intolerances,
+            'number': number_of_recipes
+        }
+
+        # Make the API request to Spoonacular
+        response = requests.get(api_url, params=params)
+        response.raise_for_status()  # Check for errors
+
+        # Extract and return the recipes from the response
+        recipes = response.json()['results']
+        return jsonify({'recipes': recipes})
+
+    except Exception as e:
+        print('Error:', str(e))
+        return jsonify({'error': 'Failed to fetch recipes'}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
