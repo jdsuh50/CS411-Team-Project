@@ -169,26 +169,9 @@ function YourProfilePage() {
   };
 
   const handleSaveChanges = () => {
-    const userId = 130 /* retrieve the user's ID */;
-    const email = "albertz@bu.edu" /* retrieve the user's email */;
-  
-    const userData = {
-      userId: userId,
-      email: email,
-      diets: selectedDiets ? selectedDiets.split(", ") : [],
-      //intolerances: selectedIntolerances ? selectedIntolerances.split(", ") : [],
-      address: selectedAddress || 'None'
-    };
-    console.log(userData);
-  
-    // Make HTTP POST request to Flask server
-    axios.post('http://127.0.0.1:5000/store_preferences', userData)
-    .then(response => {
-      console.log('Response from server:', response.data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    const logMessage = `Diets: ${selectedDiets || 'None'}, Intolerances: ${selectedIntolerances || 'None'}, Address: ${selectedAddress || 'None'}`;
+    console.log(logMessage);
+    sendUserPreferences("5","b",selectedDiets,selectedIntolerances,selectedAddress);
   };
   
 
