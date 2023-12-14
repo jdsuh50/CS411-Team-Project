@@ -1,5 +1,6 @@
-WELCOME TO FOODPAL!
+Video Demenstration: https://drive.google.com/file/d/1zeMIkrjqBAdM5yYN20H53iyx9Is_Hw96/view?usp=sharing
 
+WELCOME TO FOODPAL!
 This repository contains all the files for our project. Here are some pointers to help you find your way as you look around. 
 1. The frontend is entirely housed in the foodpal folder. The pages themselves are in foodpal/src/components.
 2. The BackEnd folder contains a file called app.py. This houses all of our api calls, as well as functions that write and read information to the database.
