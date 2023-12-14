@@ -74,21 +74,44 @@ function CuisineCheckboxList({ selectedcuisines, setSelectedcuisines }) {
 }
 
 function SearchPage() {
+  const [url, setUrl] = useState('');
+  // const [information, setInformation] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState([]);
+
 
   // handle Image Click:
   const handleImageClick = (recipeId) => {
     // Make HTTP POST request to your server
     axios.post('http://127.0.0.1:5000/recipe_click', { id: recipeId })
       .then(response => {
-        console.log('Response from server:', response.data);
+        const url = response.data.url;
+        const instructionsIngredients = response.data.instructions_ingredients;
+        
+        setUrl(url);
+        const formattedIngredients = formatIngredients(instructionsIngredients[0]);
+        setIngredients(formattedIngredients); // Sets the formatted ingredients array
+
+        const instructionArray = Object.values(instructionsIngredients[1]);
+        setInstructions(instructionArray);
       })
       .catch(error => {
         console.error('Error:', error);
       });
   };
 
+  // Function to format ingredients array
+  const formatIngredients = (rawIngredients) => {
+    const formatted = [];
+    for (let i = 0; i < rawIngredients.length; i += 3) {
+      formatted.push(`${rawIngredients[i]} ${rawIngredients[i + 1]} ${rawIngredients[i + 2]}`);
+    }
+    return formatted;
+  };
+
   const [recipes, setRecipes] = useState([]);
   const [selectedcuisines, setSelectedcuisines] = useState('');
+  
 
   const recipeRequest = () => {
     const userData = {
@@ -107,6 +130,9 @@ function SearchPage() {
         console.error('Error:', error);
       });
   };
+
+  // ingredient = information[0]
+  // instruction = information[1]
 
   return (
     <div style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'helvetica' }}>
@@ -129,6 +155,34 @@ function SearchPage() {
           </button>
         ))}
       </div>
+      <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#007BFF', color: 'white', borderRadius: '5px', textDecoration: 'none', textAlign: 'center', fontSize: '1em', fontWeight: 'bold' }}>
+        im hungry. order
+      </a>
+      {/* <h2>Ingredients</h2>
+      <ul>
+        {ingredients.map((ingredient, index) => (
+          <li key={index}>{ingredient}</li>
+        ))}
+      </ul>
+      <h2>Instructions</h2>
+      <ol>
+        {instructions.map((instruction, index) => (
+          <li key={index}>{instruction}</li>
+        ))}
+      </ol> */}
+      {/* Display Ingredients and Instructions */}
+      <h2>Ingredients</h2>
+      <ul>
+        {ingredients.map((ingredient, index) => (
+          <li key={index}>{ingredient}</li>
+        ))}
+      </ul>
+      <h2>Instructions</h2>
+      <ol>
+        {instructions.map((instruction, index) => (
+          <li key={index}>{instruction}</li>
+        ))}
+      </ol>
     </div>
   );
 };

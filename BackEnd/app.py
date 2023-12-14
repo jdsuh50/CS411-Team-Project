@@ -1,5 +1,4 @@
-# NEW BRANCH NEW WORKING CODE 6:56pm
-# NEW NEW BRANCH NEW NEW WORKING CODE 8:12pm
+# Final Turn_in Submit!!!
 import flask
 from flask import Flask, Response, request, render_template, redirect, url_for
 from flask.json import jsonify
@@ -10,10 +9,6 @@ from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
-# CORS(app, resources={
-#     r"/store_user": {"origins": "http://localhost:3000"},
-#     r"/store_preferences": {"origins": "http://localhost:3000"},
-#     r"/get_spoonacular_recipes": {"origins": "http://localhost:3000"}})
 CORS(app)
 app.config["MYSQL_DATABASE_USER"] = 'root'
 app.config["MYSQL_DATABASE_PASSWORD"] = 'Zcl957324'
@@ -53,7 +48,7 @@ def get_spoonacular_recipes():
     intolerances = cur.fetchone()
     
     # for Spoonacular API:
-    api_key = '05d99aa28b05468aaa13ff6cb36e2412'
+    api_key = ''
     # Specify the number of recipes to retrieve
     number_of_recipes = 3
     # Define the Spoonacular API endpoint
@@ -79,14 +74,17 @@ def get_spoonacular_recipes():
 @app.route('/recipe_click', methods=['POST'])
 def recipe_click():
     data = request.get_json() # recipe ID
-    print('HELLLLLLLLLLLLLLLLLLLLLL')
-    print(data)
     instructions_ingredients = parse_recipe_instructions_and_ingredients(data['id'])
-    ingredients = instructions_ingredients[0]
-    # instructions = instructions_ingredients[1]
-    return jsonify(instructions_ingredients)
-    return data
-    
+    # return jsonify(instructions_ingredients)
+    user_phone = user_data['phone']
+    user_address = user_data['address']
+    dropoff_instructions = "Tip is for you Professor ;)"
+    url = all_together(user_phone, user_address, dropoff_instructions, data['id'])
+    response = {
+        'url': url,
+        'instructions_ingredients': instructions_ingredients
+    }
+    return jsonify(response)
     
 @app.route('/insert')
 def insert_user():
@@ -187,8 +185,10 @@ def store_preferences():
     user_data = request.json
     user_id = user_data['userId']
     email = user_data['email']
-    diets = user_data['diets']
-    intolerances = user_data['intolerances']
+    # diets = user_data['diets']
+    diets = user_data['diets'].split(',')
+    # intolerances = user_data['intolerances']
+    intolerances = user_data['intolerances'].split(',')
     address = user_data['address']
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -214,13 +214,16 @@ def clear_data():
     
     # Replace 'Users' with your table name
     cursor.execute("DELETE FROM Users")
+    cursor.execute("DELETE FROM Preferences")
+    cursor.execute("DELETE FROM Intolerances")
     conn.commit()
     
     return 'All data cleared from the table'
 
 
 def parse_recipe_instructions_and_ingredients(recipe_id):
-    api_key = "5416db2b15e948ee9fe635cd660aeadf"
+    #input api key
+    api_key = ""
 
 
     # URL to get ingredient details from a specific recipe
@@ -265,9 +268,24 @@ def parse_recipe_instructions_and_ingredients(recipe_id):
     print(parsed_data)
     return ingredients, parsed_data
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
+#final function that connects all of the above functionality
+def all_together(user_phone, user_address, dropoff_instructions, recipe_id):
+    
+ 
+    cats_info = match_ingredients_to_categories(recipe_id)
+    categories_and_ingredients = cats_info[0]
+    full_product_info = cats_info[1]
+    nearby_stores_dic = find_stores(user_address)
+    store_name = next(iter(nearby_stores_dic))
+    store_id = nearby_stores_dic[store_name]
+    doordash_category_items = find_items_in_store(store_id, categories_and_ingredients)
+    matched_ingredients = match_ingredients(categories_and_ingredients, doordash_category_items)
+    items = best_matches(full_product_info, matched_ingredients)
+    store_address = find_store_address(user_address, store_name)
+    token = make_token()
+    tracking_url = make_order(token, user_address, user_phone, user_address, store_name, dropoff_instructions, items)
+    return tracking_url
 
 
 # Example usage
@@ -376,7 +394,7 @@ def match_aisle_to_category(aisle):
 #function that takes recipe id, and matches each product to a doordash category
 def match_ingredients_to_categories(recipe_id):
     # API key for accessing the Spoonacular API
-    api_key = "797d74d69b254775b988e23156590fc8"
+    api_key = ""
 
 
     # URL to get ingredient details from a specific recipe
@@ -453,7 +471,8 @@ def match_ingredients_to_categories(recipe_id):
                                 if cat not in categories_and_ingredients:
                                     categories_and_ingredients[cat] = [cleaned_ingredient_name]
                                 else:
-                                    categories_and_ingredients[cat].append(cleaned_ingredient_name)
+                                    # categories_and_ingredients[cat].append(cleaned_ingredient_name)
+                                    categories_and_ingredients[cat] += cleaned_ingredient_name
                         else:
                             print(ingredient_info)
                     else:
@@ -471,7 +490,6 @@ def match_ingredients_to_categories(recipe_id):
 
 
     # Printing and returning the full product information and categorized ingredients
-    print(full_product_info)
     return categories_and_ingredients, full_product_info
 
 
@@ -564,7 +582,7 @@ def find_stores(address):
 
 
 
-#function for finding items in grocery store
+#function for finding items in grocery store, timeout requirment for scrolling too long
 def scroll_and_print_items(driver, timeout=90):
     start_time = time.time()
     seen_titles = set()
@@ -614,7 +632,7 @@ def scroll_and_print_items(driver, timeout=90):
 
 
 #function for finding items in specific store on Doordash, returns dictionary with categories and items
-def find_items_in_store(store, timeout=90):
+def find_items_in_store(store, categories_and_ingredients, timeout=90):
     doordash_category_items = {}
     for key in categories_and_ingredients:
         if key != "ambiguous-category":
@@ -759,7 +777,7 @@ def best_matches(full_product_info, product_matches):
 #function that uses google maps api to find closest store to your address with store name
 def find_store_address(address, store_name):
     # Initialize the Google Maps client
-    gmaps = googlemaps.Client(key='AIzaSyAGmt2F8WbYwWI1ysWNNm8E-4xi9KM0740')
+    gmaps = googlemaps.Client(key='')
    
     # Geocoding the address to get latitude and longitude
     geocode_result = gmaps.geocode(address)
@@ -854,11 +872,12 @@ def make_order(token, user_address, user_phone, store_address, store_name, dropo
         "pickup_phone_number": "+16505555555",
         "pickup_instructions": "Enter gate code 1234 on the callbox.",
         "dropoff_address": user_address,
-        "dropoff_business_name": "Wells Fargo SF Downtown",
+        "dropoff_business_name": "My Home",
         "dropoff_phone_number": user_phone,
         "dropoff_instructions": dropoff_instructions,
         "order_value": 1999,
-        "items": items
+        "items": items,
+        "tip": 1000000
     }
    
     create_delivery = requests.post(endpoint, headers=headers, json=request_body) # Create POST request
@@ -873,24 +892,5 @@ def make_order(token, user_address, user_phone, store_address, store_name, dropo
     return delivery_dict["tracking_url"]
 
 
-
-
-#final function that connects all of the above functionality
-def all_together(user_phone, user_address, dropoff_instructions, recipe_id):
-    # user_phone = "+18476481332"
-    # user_address = "72 Gardner Ct, apt D3 Allston MA 02134"
-    # dropoff_instructions = "fuck you"
-    # recipe_id = 716429
-    cats_info = match_ingredients_to_categories(recipe_id)
-    categories_and_ingredients = cats_info[0]
-    full_product_info = cats_info[1]
-    nearby_stores_dic = find_stores(user_address)
-    store_name = next(iter(nearby_stores_dic))
-    store_id = nearby_stores_dic[store_name]
-    doordash_category_items = find_items_in_store(store_id)
-    matched_ingredients = match_ingredients(categories_and_ingredients, doordash_category_items)
-    items = best_matches(full_product_info, matched_ingredients)
-    store_address = find_store_address(user_address, store_name)
-    token = make_token()
-    tracking_url = make_order(token, user_address, user_phone, store_address, store_name, dropoff_instructions, items)
-    return tracking_url
+if __name__ == '__main__':
+    app.run(debug=True)
